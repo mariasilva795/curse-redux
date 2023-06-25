@@ -194,3 +194,92 @@ console.log(newUser);
 10. // Removing Items
 11. const removed = numbers.filter((a) => a !== 30);
 12. console.log(removed);`
+
+### 🚀How redux work?
+
+- We store all our application state (data) in a single place called Store. Imagine Store as Database for frontend.
+- There are 3 main parts of Redux
+    - Store - which stores all data
+    - Reducer - function which will add, update and delete data (How to do)
+    - Actions - which will define which task we want to perform (What to do)
+- We can only change store data using the Reducer function.
+- For example, we have a to-do application. We want to add a new task. So
+    - Action - ADD_TASK
+    - Reducer - perform how to add task in the store
+
+### 📌4 steps to implement Redux:
+
+- Designing the store - How store object looks like
+- List actions - that can perform in the application.
+- Create Reducer - function to define How to perform that action
+- Create redux store
+
+### 💻Creating Reducer function:
+
+- A reducer is a pure function that takes two arguments. The first one is the Initial or Current state and the second one is the action object.
+- Inside this function, we use If..else or we can use Switch case to identify the action type.
+
+`1. let id = 0;
+2.  
+3. export default function reducer(state = [], action) {
+4.     switch (action.type) {
+5.         case ADD_TASK:
+6.             return [
+7.                 ...state,
+8.                 {
+9.                     id: ++id,
+10.                     task: action.payload.task,
+11.                     completed: false,
+12.                 },
+13.             ];
+14.  
+15.         case REMOVE_TASK:
+16.             return state.filter((task) => task.id !== action.payload.id);
+17.  
+18.         case TASK_COMPLETED:
+19.             return state.map((task) =>
+20.                 task.id === action.payload.id
+21.                     ? {
+22.                           ...task,
+23.                           completed: true,
+24.                       }
+25.                     : task
+26.             );
+27.  
+28.         default:
+29.             return state;
+30.     }
+31. }`
+
+### 📜Configure redux store
+
+- For creating a redux store we have a function in the redux library called createStore and we have to just pass our Root reducer as a parameter.
+
+`1. import { legacy_createStore as createStore } from "redux";
+2. import reducer from "./tasks";
+3.  
+4. const store = createStore(reducer);
+5.  
+6. export default store;`
+
+### 🧑🏻‍💻Dispatch action from store
+
+- For dispatching any action, we have to use store.dispatch method and then we pass our action object with type property (which is the action name) and payload property (in which we can pas data related to action).
+
+`1. store.dispatch({ type: "ADD_TASK", payload: { task: "Add new task"} });`
+
+### 🔔Subscribe and unsubscribe method
+
+- As we use Subscribe feature on YouTube, store.subscribe method is also used to get notified when we have something change in our store object.
+
+`1. store.subscribe(() => {
+2.     console.log("Updated", store.getState());
+3. });`
+
+- This callback function will run on every change on the redux store.
+- Now if we want to stop this subscribe method we have to use unsubscribe.
+
+`1. const unsubscribe = store.subscribe(() => {
+2.     console.log("Updated", store.getState());
+3. });
+4. unsubscribe();`
