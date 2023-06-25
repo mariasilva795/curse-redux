@@ -1,5 +1,5 @@
-import store from "./store";
-import {addTask, removeTask, updateTask} from "./action";
+import store from "./store/configureStore";
+import { addTask, updateTask, removeTask } from "./store/tasks";
 
 store.dispatch(addTask('Buy milk'));
 console.log(store.getState());
